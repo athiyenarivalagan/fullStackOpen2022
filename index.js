@@ -31,6 +31,7 @@ app.use(express.json())
 // tiny format 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post'))
 app.use(cors())
+app.use(express.static('build'))
 
 // add a POST body content to all request & display it using the :post token
 morgan.token('post', function (req) {
