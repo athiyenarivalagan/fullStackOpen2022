@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
 
-console.log('connecting to', url);
+console.log('connecting to', url)
 
 mongoose.connect(url)
   .then(result => {
@@ -13,19 +13,19 @@ mongoose.connect(url)
   })
 
 const validators = [
-  { 
-    validator: number => { 
-    (number[2] === '-' || number[3] === '-') && number.length < 9
-    ? false
-    : true
-  },
-   msg: 'must contain atleast 8 digits'
-  },
-  { 
+  {
     validator: number => {
-    return /^\d{2,3}-\d+$/.test(number)
+      (number[2] === '-' || number[3] === '-') && number.length < 9
+        ? false
+        : true
+    },
+    msg: 'must contain atleast 8 digits'
   },
-     msg: 'invalid phone number'
+  {
+    validator: number => {
+      return /^\d{2,3}-\d+$/.test(number)
+    },
+    msg: 'invalid phone number'
   }
 ]
 
@@ -37,7 +37,7 @@ const phonebookSchema = new mongoose.Schema({
   },
   number: {
     type: String,
-    validate: validators, 
+    validate: validators,
     required: true
   }
 })
