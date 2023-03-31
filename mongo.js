@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 /* argv() returns all command line arguments that we passed when node.js
  process was being launched */
- if (process.argv.length < 3) {
+if (process.argv.length < 3) {
   console.log(
     'Please provide the password as an argument: node mongo.js <password>'
   )
@@ -19,35 +19,35 @@ const phonebookSchema = new mongoose.Schema({
 })
 
 // phonebooks will be the name of the collection in the database
-// models are constructor functions 
+// models are constructor functions
 const Phonebook = mongoose.model('Phonebook', phonebookSchema)
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected')
   })
 
 if (process.argv.length === 3) {
-  /* an empty parameter {} means we get all the contact stored in the 
+  /* an empty parameter {} means we get all the contact stored in the
   database */
   Phonebook.find({})
-  .then(result => {
-    console.log('phonebook: ');
-    result.forEach(contact => {
-      console.log(contact.name, contact.number)
+    .then(result => {
+      console.log('phonebook: ')
+      result.forEach(contact => {
+        console.log(contact.name, contact.number)
+      })
+      mongoose.connection.close() // database connection closes
     })
-    mongoose.connection.close() // database connection closes
-  })
 }
-    
+
 if (process.argv.length > 3) {
-  const name = process.argv[3] 
-  const number = process.argv[4] 
+  const name = process.argv[3]
+  const number = process.argv[4]
 
   // create a new phonebook object
   const phonebook = new Phonebook({
-    name: name, 
+    name: name,
     number: number,
   })
 
@@ -55,10 +55,10 @@ if (process.argv.length > 3) {
   to the then() method is called.
   The result of the save operationis in the result parameter. */
   phonebook.save()
-  .then(
-    (result) => {
-    console.log(`added ${name} number ${number} to phonebook`)
-    return mongoose.connection.close()
-  })
-  .catch((err) => console.log(err))
+    .then(
+      () => {
+        console.log(`added ${name} number ${number} to phonebook`)
+        return mongoose.connection.close()
+      })
+    .catch((err) => console.log(err))
 }
